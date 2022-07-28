@@ -1,0 +1,67 @@
+@startuml
+ 
+skinparam classAttributeIconSize 0
+
+class Tela {
+    -Array ListaDeInstrumentos
+    
+
+    +getInstrumento()
+    +recebeTeclado()
+    +playPause()
+    +botaoImport()
+    +botaoExpport()
+}
+
+class Tocador{
+   - instrumento
+   - bpm
+   - volume
+
+
+   + tocarSom()
+   + pauseSom()
+}
+
+class Texto{
+ - String texto
+
+ + String getTexto()
+
+
+}
+
+
+class Import{
++ void abrirExplorador()
+- String abrirArquivo()
+
+
+}
+class Leitor{
+
++List converteTexto()
+
+}
+
+class Codificador{
+
++String listToJfugue()
+
+
+}
+
+class Export{ 
+
++ salvaArquivo()
+}
+
+Import --right--> Texto
+Tela --left--> Texto
+Texto ----> Leitor
+Leitor ----> Codificador
+Codificador --up--> Tocador
+Tela ----> Tocador
+Tocador ----> Export
+
+@enduml

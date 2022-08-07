@@ -3,7 +3,7 @@ package app;
 import app.gui.Gui;
 
 /**
- * Hello world!
+ * class Principal
  *
  */
 public class App {

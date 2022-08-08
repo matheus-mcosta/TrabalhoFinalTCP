@@ -4,6 +4,7 @@
 
 # Log file
 *.log
+wget-log
 
 # BlueJ files
 *.ctxt

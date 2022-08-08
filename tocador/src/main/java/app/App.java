@@ -8,7 +8,7 @@ import app.gui.Gui;
  */
 public class App {
     public static void main(String[] args) {
-        Gui janela = new Gui(); // cria janela
+        final Gui janela = new Gui(); // cria janela
         janela.setVisible(true);
 
     }

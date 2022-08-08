@@ -6,6 +6,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+// import app.backend.Texto;
 import app.gui.componentes.AreaTexto;
 import app.gui.componentes.Botoes;
 
@@ -31,7 +32,12 @@ public class Gui extends JFrame {
         setResizable(false);
 
         inicializaPaineis();
+        inicializaTexto();
 
+    }
+
+    private void inicializaTexto() {
+        // Texto t = new Texto();
     }
 
     private void setPanel(JPanel p, int largura, int altura) {
@@ -51,7 +57,6 @@ public class Gui extends JFrame {
         instrumentos.setBounds(650, 150, 280, 50);
         p1.add(instrumentos);
 
-
         // adiciona caixa de texto para input
         AreaTexto t = new AreaTexto();
         p1.add(t);
@@ -67,8 +72,12 @@ public class Gui extends JFrame {
         p.add(stopButton);
         // botoes da direita
         Botoes importButton = new Botoes("Import", 650, 250);
-        Botoes exportButton = new Botoes("Export", 800, 250);
+        importButton.addAction(importButton, 0);
+
         p.add(importButton);
+
+        Botoes exportButton = new Botoes("Export", 800, 250);
+        exportButton.addAction(exportButton, 1);
         p.add(exportButton);
 
     }

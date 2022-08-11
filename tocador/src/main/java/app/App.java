@@ -1,6 +1,6 @@
 package app;
 
-import app.gui.Gui;
+import app.tela.Tela;
 
 /**
  * class Principal
@@ -8,7 +8,7 @@ import app.gui.Gui;
  */
 public class App {
     public static void main(String[] args) {
-        final Gui janela = new Gui(); // cria janela
+        final Tela janela = new Tela(); // cria janela
         janela.setVisible(true);
 
     }

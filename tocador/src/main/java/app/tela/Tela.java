@@ -1,4 +1,4 @@
-package app.gui;
+package app.tela;
 
 import java.awt.Color;
 
@@ -6,23 +6,28 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import app.backend.Texto;
 // import app.backend.Texto;
-import app.gui.componentes.AreaTexto;
-import app.gui.componentes.Botoes;
+import app.tela.componentes.AreaTexto;
+import app.tela.componentes.Botoes;
 
 /**
- * Gui
+ * Tela
  */
+
 enum ListaInstrumentos {
     teste, teste2, teste3, test4
 }
 
-public class Gui extends JFrame {
+public class Tela extends JFrame {
     // constantes do tamanho da tela
     static final int LARGURA = 960;
     static final int ALTURA = 600;
 
-    public Gui() {
+    // variaveis
+    Texto texto;
+
+    public Tela() {
         // incializadores da tela geral
         // setBounds(0, 0, LARGURA, ALTURA);
         setTitle("Tocador de Notas Musicais");
@@ -32,12 +37,7 @@ public class Gui extends JFrame {
         setResizable(false);
 
         inicializaPaineis();
-        inicializaTexto();
 
-    }
-
-    private void inicializaTexto() {
-        // Texto t = new Texto();
     }
 
     private void setPanel(JPanel p, int largura, int altura) {
@@ -58,26 +58,28 @@ public class Gui extends JFrame {
         p1.add(instrumentos);
 
         // adiciona caixa de texto para input
-        AreaTexto t = new AreaTexto();
-        p1.add(t);
-        inicializaBotoes(p1);
+        AreaTexto caixaTexto = new AreaTexto();
+
+        p1.add(caixaTexto);
+        // incializa texto e botooes da tela
+        Texto texto = new Texto();
+        inicializaBotoes(p1, texto);
         add(p1);
     }
 
-    private void inicializaBotoes(JPanel p) {
+    private void inicializaBotoes(JPanel p, Texto t) {
         // botoes da esquerda
         Botoes playButton = new Botoes("Play", 185, 475);
         Botoes stopButton = new Botoes("Stop", 335, 475);
         p.add(playButton);
         p.add(stopButton);
+
         // botoes da direita
         Botoes importButton = new Botoes("Import", 650, 250);
-        importButton.addAction(importButton, 0);
-
+        t.importAction(importButton);
         p.add(importButton);
 
         Botoes exportButton = new Botoes("Export", 800, 250);
-        exportButton.addAction(exportButton, 1);
         p.add(exportButton);
 
     }

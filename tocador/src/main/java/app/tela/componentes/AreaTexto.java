@@ -1,4 +1,4 @@
-package app.gui.componentes;
+package app.tela.componentes;
 
 import java.awt.Color;
 

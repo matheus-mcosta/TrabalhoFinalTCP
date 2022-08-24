@@ -9,14 +9,11 @@ import javax.swing.JScrollPane;
 
 import app.backend.Texto;
 import app.tela.componentes.Botoes;
+import app.tela.enums.ListaInstrumentos;
 
 /**
  * Tela
  */
-
-enum ListaInstrumentos {
-    teste, teste2, teste3, test4
-}
 
 public class Tela extends JFrame {
     // constantes do tamanho da tela
@@ -52,7 +49,7 @@ public class Tela extends JFrame {
         painel1.setBackground(Color.decode("#797887"));
 
         // dropdown list de instrumentos
-        JComboBox<ListaInstrumentos> instrumentos = new JComboBox<>(ListaInstrumentos.values());
+        JComboBox<ListaInstrumentos> instrumentos = new JComboBox<ListaInstrumentos>(ListaInstrumentos.values());
         instrumentos.setBounds(650, 150, 280, 50);
         painel1.add(instrumentos);
 

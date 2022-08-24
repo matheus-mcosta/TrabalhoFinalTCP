@@ -1,5 +1,6 @@
 package app.backend;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -8,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import javax.swing.JFileChooser;
+import javax.swing.JTextArea;
 import javax.swing.filechooser.FileSystemView;
 
 import app.tela.componentes.Botoes;
@@ -15,7 +17,7 @@ import app.tela.componentes.Botoes;
 /**
  * Texto
  */
-abstract class Arquivo {
+abstract class Arquivo extends JTextArea {
 
     File arquivoTexto;
     String content;
@@ -26,6 +28,16 @@ public class Texto extends Arquivo {
 
     public Texto() {
 
+        setBounds(50, 50, 550, 400);
+        setLineWrap(true);
+        setWrapStyleWord(true);
+        setText("");
+        setOpaque(true);
+        setBackground(Color.decode("#b8b6cc"));
+    }
+
+    public String getContent() {
+        return content;
     }
 
     public void setArquivoTexto(File arquivoTexto) {
@@ -46,6 +58,8 @@ public class Texto extends Arquivo {
                     System.out.println(arquivoTexto.getAbsolutePath());
                     try {
                         content = Files.readString(Paths.get(arquivoTexto.toURI()));
+                        setText(content);
+
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }

@@ -58,13 +58,14 @@ public class Tela extends JFrame {
         painel1.add(instrumentos);
 
         // adiciona caixa de texto para input
-        AreaTexto caixaTexto = new AreaTexto();
-
-        painel1.add(caixaTexto);
-        // incializa texto e botooes da tela
         Texto texto = new Texto();
+
+        painel1.add(texto);
+        // incializa texto e botooes da tela
         inicializaBotoes(painel1, texto);
+
         add(painel1);
+
     }
 
     private void inicializaBotoes(JPanel painel, Texto texto) {

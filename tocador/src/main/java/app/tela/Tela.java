@@ -5,19 +5,15 @@ import java.awt.Color;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import app.backend.Texto;
-// import app.backend.Texto;
-import app.tela.componentes.AreaTexto;
 import app.tela.componentes.Botoes;
+import app.tela.enums.ListaInstrumentos;
 
 /**
  * Tela
  */
-
-enum ListaInstrumentos {
-    teste, teste2, teste3, test4
-}
 
 public class Tela extends JFrame {
     // constantes do tamanho da tela
@@ -48,39 +44,41 @@ public class Tela extends JFrame {
     private void inicializaPaineis() {
 
         // divididos dois paineis
-        JPanel p1 = new JPanel(null);
-        setPanel(p1, 600, 600);
-        p1.setBackground(Color.decode("#797887"));
+        JPanel painel1 = new JPanel(null);
+        setPanel(painel1, 600, 600);
+        painel1.setBackground(Color.decode("#797887"));
 
         // dropdown list de instrumentos
-        JComboBox<ListaInstrumentos> instrumentos = new JComboBox<>(ListaInstrumentos.values());
+        JComboBox<ListaInstrumentos> instrumentos = new JComboBox<ListaInstrumentos>(ListaInstrumentos.values());
         instrumentos.setBounds(650, 150, 280, 50);
-        p1.add(instrumentos);
+        painel1.add(instrumentos);
 
         // adiciona caixa de texto para input
-        AreaTexto caixaTexto = new AreaTexto();
-
-        p1.add(caixaTexto);
-        // incializa texto e botooes da tela
         Texto texto = new Texto();
-        inicializaBotoes(p1, texto);
-        add(p1);
+        JScrollPane scrollPane = new JScrollPane(texto);
+        scrollPane.setBounds(50, 50, 550, 400);
+        painel1.add(scrollPane);
+        // incializa texto e botooes da tela
+        inicializaBotoes(painel1, texto);
+
+        add(painel1);
+
     }
 
-    private void inicializaBotoes(JPanel p, Texto t) {
+    private void inicializaBotoes(JPanel painel, Texto texto) {
         // botoes da esquerda
         Botoes playButton = new Botoes("Play", 185, 475);
         Botoes stopButton = new Botoes("Stop", 335, 475);
-        p.add(playButton);
-        p.add(stopButton);
+        painel.add(playButton);
+        painel.add(stopButton);
 
         // botoes da direita
         Botoes importButton = new Botoes("Import", 650, 250);
-        t.importAction(importButton);
-        p.add(importButton);
+        texto.importAction(importButton);
+        painel.add(importButton);
 
         Botoes exportButton = new Botoes("Export", 800, 250);
-        p.add(exportButton);
+        painel.add(exportButton);
 
     }
 

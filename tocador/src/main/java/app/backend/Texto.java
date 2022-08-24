@@ -3,7 +3,9 @@ package app.backend;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-// import java.util.ArrayList;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
@@ -16,6 +18,7 @@ import app.tela.componentes.Botoes;
 abstract class Arquivo {
 
     File arquivoTexto;
+    String content;
 }
 
 public class Texto extends Arquivo {
@@ -41,26 +44,11 @@ public class Texto extends Arquivo {
                     // achar um jeito de modular isso para outra classe
                     arquivoTexto = arquivo.getSelectedFile();
                     System.out.println(arquivoTexto.getAbsolutePath());
-                    System.out.println(arquivoTexto.getName());
-
-                    System.out.println(arquivoTexto);
-
-                }
-            }
-        });
-    }
-
-    public void exportAction(Botoes b) {
-        b.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser arquivo = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
-
-                if (arquivo.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-
-                    // TODO: salvar o arquivo em uma variavel primeiro
-                    // funcao de exportar o som para um arquivo
+                    try {
+                        content = Files.readString(Paths.get(arquivoTexto.toURI()));
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
                 }
             }
         });

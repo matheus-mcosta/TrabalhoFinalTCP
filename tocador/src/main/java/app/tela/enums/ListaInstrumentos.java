@@ -5,7 +5,7 @@ public enum ListaInstrumentos {
     HARPSICHORD("Harpsichord"),
     TUBULARBELLS("Tubular Bells"),
     PANFLUTE("Pan Flute"),
-    CHURCHORGAN("Churhc Organ");
+    CHURCHORGAN("Church Organ");
 
     private String nome;
 

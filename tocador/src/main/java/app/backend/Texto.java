@@ -28,7 +28,6 @@ public class Texto extends Arquivo {
 
     public Texto() {
 
-        setBounds(50, 50, 550, 400);
         setLineWrap(true);
         setWrapStyleWord(true);
         setText("");

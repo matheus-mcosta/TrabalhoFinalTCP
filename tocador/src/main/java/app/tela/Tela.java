@@ -5,10 +5,9 @@ import java.awt.Color;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import app.backend.Texto;
-// import app.backend.Texto;
-import app.tela.componentes.AreaTexto;
 import app.tela.componentes.Botoes;
 
 /**
@@ -59,8 +58,9 @@ public class Tela extends JFrame {
 
         // adiciona caixa de texto para input
         Texto texto = new Texto();
-
-        painel1.add(texto);
+        JScrollPane scrollPane = new JScrollPane(texto);
+        scrollPane.setBounds(50, 50, 550, 400);
+        painel1.add(scrollPane);
         // incializa texto e botooes da tela
         inicializaBotoes(painel1, texto);
 

@@ -8,8 +8,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import app.backend.Texto;
+import app.enums.ListaInstrumentos;
 import app.tela.componentes.Botoes;
-import app.tela.enums.ListaInstrumentos;
 
 /**
  * Tela

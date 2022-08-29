@@ -1,6 +1,7 @@
-import java.util.ArrayList;
+package app.backend;
 
-package app.tokenizer.Tokenizer;
+import java.util.ArrayList;
+import app.enums.Tokens;
 
 /*
 public class Main {
@@ -13,32 +14,8 @@ public class Main {
 }
 */
 
-enum Tokens {
-    NOTA_LA,
-    NOTA_SI,
-    NOTA_DO,
-    NOTA_RE,
-    NOTA_MI,
-    NOTA_FA,
-    NOTA_SOL,
-    TROCA_AGOGO,
-    TROCA_HARPSICHORD,
-    TROCA_BELLS,
-    TROCA_FLUTE,
-    TROCA_CHURCH,
-    // Tocador irá decidir
-    SILENCIO_OU_PAUSA,
-    // Tocador irá decidir se consegue ou não dobrar o volume
-    VOLUME_DOBRO,
-    // Tocador irá decidir se consegue ou não aumentar a oitava
-    AUMENTA_OITAVA,
-    // Tocador deve somar o próximo valor
-    INSTRUMENTO_DIGITO,
-    FIM
-}
-
 public class Tokenizer {
-    public static ArrayList<Tokens> Tokenizer(String texto) {
+    public static ArrayList<Tokens> createToken(String texto) {
         ArrayList<Tokens> tokens = new ArrayList<Tokens>();
         int stringSize = texto.length();
         int lastChar = 1;
@@ -98,7 +75,7 @@ public class Tokenizer {
                     break;
                 default:
                     if (lastChar >= 'A' && lastChar <= 'G') {
-                        tokens.add(tokens.get(tokens.size()-1));
+                        tokens.add(tokens.get(tokens.size() - 1));
                     } else {
                         tokens.add(Tokens.SILENCIO_OU_PAUSA);
                     }

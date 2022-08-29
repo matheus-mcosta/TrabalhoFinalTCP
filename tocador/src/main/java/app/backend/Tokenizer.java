@@ -15,8 +15,16 @@ public class Main {
 */
 
 public class Tokenizer {
+    static ArrayList<Tokens> tokens = new ArrayList<Tokens>();
+
+    public static void PrintToken() {
+        System.out.println(tokens);
+
+    }
+
     public static ArrayList<Tokens> createToken(String texto) {
-        ArrayList<Tokens> tokens = new ArrayList<Tokens>();
+        // empty start for ArrayList
+        tokens.removeAll(tokens);
         int stringSize = texto.length();
         int lastChar = 1;
 

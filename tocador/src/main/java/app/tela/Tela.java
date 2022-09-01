@@ -8,8 +8,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import app.backend.Texto;
+import app.enums.ListaInstrumentos;
 import app.tela.componentes.Botoes;
-import app.tela.enums.ListaInstrumentos;
 
 /**
  * Tela
@@ -68,8 +68,10 @@ public class Tela extends JFrame {
     private void inicializaBotoes(JPanel painel, Texto texto) {
         // botoes da esquerda
         Botoes playButton = new Botoes("Play", 185, 475);
-        Botoes stopButton = new Botoes("Stop", 335, 475);
+        texto.playAction(playButton);
         painel.add(playButton);
+
+        Botoes stopButton = new Botoes("Stop", 335, 475);
         painel.add(stopButton);
 
         // botoes da direita

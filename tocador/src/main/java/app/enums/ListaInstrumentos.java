@@ -1,4 +1,4 @@
-package app.tela.enums;
+package app.enums;
 
 public enum ListaInstrumentos {
     AGOGO("Agogo"),

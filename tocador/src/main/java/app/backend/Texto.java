@@ -12,6 +12,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JTextArea;
 import javax.swing.filechooser.FileSystemView;
 
+import org.jfugue.pattern.Pattern;
+
 import app.tela.componentes.Botoes;
 
 /**
@@ -35,16 +37,21 @@ public class Texto extends Arquivo {
         setBackground(Color.decode("#b8b6cc"));
     }
 
+    private void setContent(String texto) {
+
+        this.content = texto;
+    }
+
     public String getContent() {
-        return content;
+        return this.content;
     }
 
     public void setArquivoTexto(File arquivoTexto) {
         this.arquivoTexto = arquivoTexto;
     }
 
-    public void importAction(Botoes b) {
-        b.addActionListener(new ActionListener() {
+    public void importAction(Botoes botao) {
+        botao.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -54,10 +61,12 @@ public class Texto extends Arquivo {
                     // se abrir com sucesso faz isso ->
                     // achar um jeito de modular isso para outra classe
                     arquivoTexto = arquivo.getSelectedFile();
-                    System.out.println(arquivoTexto.getAbsolutePath());
                     try {
                         content = Files.readString(Paths.get(arquivoTexto.toURI()));
                         setText(content);
+                        Tokenizer.createToken(content);
+
+                        Tokenizer.PrintToken();
 
                     } catch (IOException e1) {
                         e1.printStackTrace();
@@ -67,4 +76,30 @@ public class Texto extends Arquivo {
         });
     }
 
+    private void playSound() {
+
+        // TODO: implementar Jfugue
+        Pattern pattern = new Pattern(" X[Volume]=10200 C D E F G A B");
+        JFugue tocador = new JFugue();
+        tocador.playSound(pattern);
+    }
+
+    public void playAction(Botoes botao) {
+
+        botao.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setContent(getText());
+
+                Tokenizer.createToken(content);
+
+                Tokenizer.PrintToken();
+                playSound();
+
+            }
+
+        });
+
+    }
 }

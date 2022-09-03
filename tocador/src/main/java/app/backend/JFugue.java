@@ -6,11 +6,28 @@ import org.jfugue.player.Player;
 /**
  * JFugue
  */
-public class JFugue {
+public class JFugue implements Runnable {
 
-    Player player = new Player();
+    Pattern pattern;
+    Player player;
 
-    public void playSound(Pattern pattern) {
-        player.play(pattern);
+    JFugue(Pattern patternInput) {
+
+        this.pattern = new Pattern(patternInput);
+        this.player = new Player();
+
+    }
+
+    @Override
+    public void run() {
+        // TODO Auto-generated method stub
+
+        this.player.play(this.pattern);
+    }
+
+
+    // faz tocar pattern vazio, mesmo que dar stop na musica
+    public void stopSound() {
+        this.player.play("");
     }
 }

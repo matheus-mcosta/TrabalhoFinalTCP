@@ -27,6 +27,12 @@ abstract class Arquivo extends JTextArea {
 
 public class Texto extends Arquivo {
     // private ArrayList<String> texto = new ArrayList<>();
+    //
+
+    Pattern pattern = new Pattern(
+            " :CON(7, 40) I[TROMBONE] Rh G5is E5i Ri | G5s Ris E5q Rs :CON(7, 100) | G5q E5i Rs D5q rs C5h Rs I[AGOGO] Rh G5is E5i Ri | G5s Ris E5q Rs | G5q E5i Rs D5q rs C5h Rs ");
+    JFugue tocador = new JFugue(pattern);
+    Thread threadTocador;
 
     public Texto() {
 
@@ -78,10 +84,17 @@ public class Texto extends Arquivo {
 
     private void playSound() {
 
-        // TODO: implementar Jfugue
-        Pattern pattern = new Pattern(" X[Volume]=10200 C D E F G A B");
-        JFugue tocador = new JFugue();
-        tocador.playSound(pattern);
+        // implementa threads para poder dar stop no som!!!
+        threadTocador = new Thread(tocador);
+        threadTocador.start();
+        System.out.println(threadTocador.getId());
+    }
+
+    private void stopSound() {
+
+        System.out.println("entrou");
+        // troca pattern a ser tocado para vazio, mesmo que stop no som
+        tocador.stopSound();
     }
 
     public void playAction(Botoes botao) {
@@ -102,4 +115,21 @@ public class Texto extends Arquivo {
         });
 
     }
+
+    public void stopAction(Botoes botao) {
+
+        botao.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setContent(getText());
+
+                stopSound();
+
+            }
+
+        });
+
+    }
+
 }

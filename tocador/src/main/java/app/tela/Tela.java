@@ -72,6 +72,7 @@ public class Tela extends JFrame {
         painel.add(playButton);
 
         Botoes stopButton = new Botoes("Stop", 335, 475);
+        texto.stopAction(stopButton);
         painel.add(stopButton);
 
         // botoes da direita

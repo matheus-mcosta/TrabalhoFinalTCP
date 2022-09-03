@@ -17,7 +17,26 @@ public class Main {
 public class Tokenizer {
     static ArrayList<Tokens> tokens = new ArrayList<Tokens>();
 
+    static String stringConvertida = "";
+    static int oitava = 3;
+
     public static void PrintToken() {
+
+        // iterando lista de tokens
+        for (Tokens token : tokens) {
+            if (token == Tokens.AUMENTA_OITAVA) {
+                if (oitava < 10) {
+                    oitava++;
+                } else {
+                    oitava = 3;
+                }
+
+            } else {
+                stringConvertida += token.getData() + oitava + ' ';
+            }
+        }
+
+        System.out.println(stringConvertida);
         System.out.println(tokens);
 
     }
@@ -25,6 +44,7 @@ public class Tokenizer {
     public static ArrayList<Tokens> createToken(String texto) {
         // empty start for ArrayList
         tokens.removeAll(tokens);
+        stringConvertida = "";
         int stringSize = texto.length();
         int lastChar = 1;
 
@@ -58,6 +78,7 @@ public class Tokenizer {
                 case '7':
                 case '8':
                 case '9':
+                // FIXME: sair somente a troca de oitava
                     tokens.add(Tokens.INSTRUMENTO_DIGITO);
                     // O Tocador deverá considerar o Token como dígito
                     tokens.add(Tokens.values()[texto.charAt(i) - '0']);

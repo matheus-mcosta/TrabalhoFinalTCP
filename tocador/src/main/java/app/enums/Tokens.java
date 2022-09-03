@@ -1,25 +1,38 @@
 package app.enums;
 
 public enum Tokens {
-    NOTA_LA,
-    NOTA_SI,
-    NOTA_DO,
-    NOTA_RE,
-    NOTA_MI,
-    NOTA_FA,
-    NOTA_SOL,
-    TROCA_AGOGO,
-    TROCA_HARPSICHORD,
-    TROCA_BELLS,
-    TROCA_FLUTE,
-    TROCA_CHURCH,
+    NOTA_LA("A"),
+    NOTA_SI("B"),
+    NOTA_DO("C"),
+    NOTA_RE("D"),
+    NOTA_MI("E"),
+    NOTA_FA("F"),
+    NOTA_SOL("G"),
+    TROCA_AGOGO("I[AGOGO]"),
+    TROCA_HARPSICHORD("I[HARPISCHORD]"),
+    TROCA_BELLS("I[TUBULAR_BELLS]"),
+    TROCA_FLUTE("I[PAN_FLUTE]"),
+    TROCA_CHURCH("I[CHURCH_ORGAN]"),
     // Tocador irá decidir
-    SILENCIO_OU_PAUSA,
+    SILENCIO_OU_PAUSA("R"),
     // Tocador irá decidir se consegue ou não dobrar o volume
-    VOLUME_DOBRO,
+    // :CON(7, 40)
+    VOLUME_DOBRO(""),
     // Tocador irá decidir se consegue ou não aumentar a oitava
-    AUMENTA_OITAVA,
+    AUMENTA_OITAVA(""),
     // Tocador deve somar o próximo valor
-    INSTRUMENTO_DIGITO,
-    FIM
+    INSTRUMENTO_DIGITO(""),
+    FIM("A");
+
+    private final String data;
+
+    private Tokens(String data) {
+
+        this.data = data;
+
+    }
+
+    public String getData() {
+        return data;
+    }
 }

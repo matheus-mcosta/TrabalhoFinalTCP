@@ -17,5 +17,5 @@ public enum ListaInstrumentos {
     public String toString() {
         return this.nome;
     }
-    
+
 }

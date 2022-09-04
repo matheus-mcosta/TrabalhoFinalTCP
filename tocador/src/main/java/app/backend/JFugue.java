@@ -25,7 +25,6 @@ public class JFugue implements Runnable {
         this.player.play(this.pattern);
     }
 
-
     // faz tocar pattern vazio, mesmo que dar stop na musica
     public void stopSound() {
         this.player.play("");

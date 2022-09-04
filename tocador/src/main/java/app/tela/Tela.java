@@ -1,6 +1,8 @@
 package app.tela;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -8,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import app.backend.Texto;
+import app.backend.Tokenizer;
 import app.enums.ListaInstrumentos;
 import app.tela.componentes.Botoes;
 
@@ -49,7 +52,16 @@ public class Tela extends JFrame {
         painel1.setBackground(Color.decode("#797887"));
 
         // dropdown list de instrumentos
-        JComboBox<ListaInstrumentos> instrumentos = new JComboBox<ListaInstrumentos>(ListaInstrumentos.values());
+        // FIX: passar pro tradutor
+        final JComboBox<ListaInstrumentos> instrumentos = new JComboBox<ListaInstrumentos>(ListaInstrumentos.values());
+        instrumentos.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                Tokenizer.setDropList(instrumentos.getSelectedItem().toString());
+            }
+        });
+
         instrumentos.setBounds(650, 150, 280, 50);
         painel1.add(instrumentos);
 

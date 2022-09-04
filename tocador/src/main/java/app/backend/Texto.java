@@ -29,9 +29,7 @@ public class Texto extends Arquivo {
     // private ArrayList<String> texto = new ArrayList<>();
     //
 
-    Pattern pattern = new Pattern(
-            " :CON(7, 40) I[TROMBONE] Rh G5is E5i Ri | G5s Ris E5q Rs :CON(7, 100) | G5q E5i Rs D5q rs C5h Rs I[AGOGO] Rh G5is E5i Ri | G5s Ris E5q Rs | G5q E5i Rs D5q rs C5h Rs ");
-    JFugue tocador = new JFugue(pattern);
+    JFugue tocador;
     Thread threadTocador;
 
     public Texto() {
@@ -72,8 +70,6 @@ public class Texto extends Arquivo {
                         setText(content);
                         Tokenizer.createToken(content);
 
-                        Tokenizer.PrintToken();
-
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
@@ -82,7 +78,7 @@ public class Texto extends Arquivo {
         });
     }
 
-    private void playSound() {
+    private void playSound(JFugue tocador) {
 
         // implementa threads para poder dar stop no som!!!
         threadTocador = new Thread(tocador);
@@ -90,7 +86,7 @@ public class Texto extends Arquivo {
         System.out.println(threadTocador.getId());
     }
 
-    private void stopSound() {
+    private void stopSound(JFugue tocador) {
 
         System.out.println("entrou");
         // troca pattern a ser tocado para vazio, mesmo que stop no som
@@ -106,9 +102,9 @@ public class Texto extends Arquivo {
                 setContent(getText());
 
                 Tokenizer.createToken(content);
-
-                Tokenizer.PrintToken();
-                playSound();
+                Pattern pattern = new Pattern(Tokenizer.stringConvertida);
+                tocador = new JFugue(pattern);
+                playSound(tocador);
 
             }
 
@@ -124,7 +120,7 @@ public class Texto extends Arquivo {
             public void actionPerformed(ActionEvent e) {
                 setContent(getText());
 
-                stopSound();
+                stopSound(tocador);
 
             }
 

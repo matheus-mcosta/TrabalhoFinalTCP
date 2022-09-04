@@ -1,6 +1,7 @@
 package app.backend;
 
 import java.util.ArrayList;
+
 import app.enums.Tokens;
 
 /*
@@ -19,35 +20,44 @@ public class Tokenizer {
 
     static String stringConvertida = "";
     static int oitava = 3;
+    static int instrumento;
+    static int volume = 20;
+    static int dropList = 113;
 
-    public static void PrintToken() {
-
-        // iterando lista de tokens
-        for (Tokens token : tokens) {
-            if (token == Tokens.AUMENTA_OITAVA) {
-                if (oitava < 10) {
-                    oitava++;
-                } else {
-                    oitava = 3;
-                }
-
-            } else {
-                stringConvertida += token.getData() + oitava + ' ';
-            }
+    public static void setDropList(String entrada) {
+        switch (entrada) {
+            case "Agogo":
+                dropList = 113;
+                break;
+            case "Harpsichord":
+                dropList = 6;
+                break;
+            case "Tubular Bells":
+                dropList = 14;
+                break;
+            case "Pan Flute":
+                dropList = 75;
+                break;
+            case "Church Organ":
+                dropList = 19;
+                break;
+            default:
+                break;
         }
-
-        System.out.println(stringConvertida);
-        System.out.println(tokens);
-
     }
 
-    public static ArrayList<Tokens> createToken(String texto) {
+    public static void createToken(String texto) {
         // empty start for ArrayList
+        instrumento = dropList;
+        volume = 20;
+        oitava = 3;
         tokens.removeAll(tokens);
-        stringConvertida = "";
+        stringConvertida = " :CON(7, " + volume + ")"
+                + " I" + instrumento;
         int stringSize = texto.length();
         int lastChar = 1;
 
+        // TODO: TROCAR ARRAYLIST TOKENS PARA ESCRITA DIRETA STRING
         for (int i = 0; i < stringSize; i++) {
             switch (texto.charAt(i)) {
                 case 'A':
@@ -58,7 +68,9 @@ public class Tokenizer {
                 case 'F':
                 case 'G':
                     // As notas estão declaradas em ordem
-                    tokens.add(Tokens.values()[Tokens.NOTA_LA.ordinal() + texto.charAt(i) - 'A']);
+                    stringConvertida += " "
+                            + Tokens.values()[Tokens.NOTA_LA.ordinal() + texto.charAt(i) - 'A'].getData()
+                            + oitava;
                     break;
                 case 'i':
                 case 'I':
@@ -66,7 +78,8 @@ public class Tokenizer {
                 case 'O':
                 case 'u':
                 case 'U':
-                    tokens.add(Tokens.TROCA_HARPSICHORD);
+                    instrumento = Integer.parseInt(Tokens.TROCA_HARPSICHORD.getData());
+                    stringConvertida += " I" + instrumento;
                     break;
                 case '0':
                 case '1':
@@ -78,35 +91,55 @@ public class Tokenizer {
                 case '7':
                 case '8':
                 case '9':
-                // FIXME: sair somente a troca de oitava
-                    tokens.add(Tokens.INSTRUMENTO_DIGITO);
-                    // O Tocador deverá considerar o Token como dígito
-                    tokens.add(Tokens.values()[texto.charAt(i) - '0']);
+                    if ((instrumento + (texto.charAt(i) - '0')) < 127) {
+                        instrumento += (texto.charAt(i) - '0');
+                    } else {
+                        instrumento = 0;
+                    }
+
+                    stringConvertida += " I" + instrumento;
+                    System.out.println(instrumento);
                     break;
                 case ' ':
-                    tokens.add(Tokens.VOLUME_DOBRO);
+                    if (volume < 70) {
+                        volume *= 2;
+                    } else {
+                        volume = 20;
+                    }
+
+                    stringConvertida += " :CON(7, " + volume + ")";
+                    // :CON(7, 40)
+
                     break;
                 case '!':
-                    tokens.add(Tokens.TROCA_AGOGO);
+                    instrumento = Integer.parseInt(Tokens.TROCA_AGOGO.getData());
+                    stringConvertida += " I" + instrumento;
                     break;
                 case '?':
                 case '.':
-                    tokens.add(Tokens.AUMENTA_OITAVA);
+                    if (oitava < 9) {
+                        oitava++;
+                    } else {
+                        oitava = 3;
+                    }
                     break;
                 case '\n':
-                    tokens.add(Tokens.TROCA_BELLS);
+                    instrumento = Integer.parseInt(Tokens.TROCA_BELLS.getData());
+                    stringConvertida += " I" + instrumento;
                     break;
                 case ';':
-                    tokens.add(Tokens.TROCA_FLUTE);
+                    instrumento = Integer.parseInt(Tokens.TROCA_FLUTE.getData());
+                    stringConvertida += " I" + instrumento;
                     break;
                 case ',':
-                    tokens.add(Tokens.TROCA_CHURCH);
+                    instrumento = Integer.parseInt(Tokens.TROCA_CHURCH.getData());
+                    stringConvertida += " I" + instrumento;
                     break;
                 default:
                     if (lastChar >= 'A' && lastChar <= 'G') {
-                        tokens.add(tokens.get(tokens.size() - 1));
+                        stringConvertida += stringConvertida.substring(stringConvertida.length() - 3);
                     } else {
-                        tokens.add(Tokens.SILENCIO_OU_PAUSA);
+                        stringConvertida += " " + Tokens.SILENCIO_OU_PAUSA.getData();
                     }
 
                     break;
@@ -115,8 +148,6 @@ public class Tokenizer {
             lastChar = texto.charAt(i);
         }
 
-        tokens.add(Tokens.FIM);
-
-        return tokens;
+        System.out.println(stringConvertida);
     }
 }

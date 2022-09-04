@@ -10,6 +10,8 @@ import java.nio.file.Paths;
 
 import javax.swing.JFileChooser;
 import javax.swing.JTextArea;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 
 import org.jfugue.pattern.Pattern;
@@ -60,6 +62,9 @@ public class Texto extends Arquivo {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser arquivo = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("Arquivos de Texto .TXT", "txt");
+                arquivo.addChoosableFileFilter(filter);
+                arquivo.setAcceptAllFileFilterUsed(false);
 
                 if (arquivo.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                     // se abrir com sucesso faz isso ->
@@ -76,6 +81,10 @@ public class Texto extends Arquivo {
                 }
             }
         });
+    }
+
+    public void exportAction(Botoes botao) {
+//TODO: IMPLEMENTAR EXPORT EM MIDI
     }
 
     private void playSound(JFugue tocador) {

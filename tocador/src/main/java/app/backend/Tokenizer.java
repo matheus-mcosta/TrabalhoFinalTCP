@@ -1,7 +1,5 @@
 package app.backend;
 
-import java.util.ArrayList;
-
 import app.enums.Tokens;
 
 /*
@@ -16,12 +14,16 @@ public class Main {
 */
 
 public class Tokenizer {
-    static ArrayList<Tokens> tokens = new ArrayList<Tokens>();
+    static final int MIN_VOLUME = 19;
+    static final int MAX_VOLUME = 79;
+    static final int OITAVA_DEFAULT = 3;
+    static final int MAX_OITAVA = 9;
+    static final int MAX_MIDI = 127;
 
-    static String stringConvertida = "";
-    static int oitava = 3;
+    static String stringConvertida;
+    static int oitava;
     static int instrumento;
-    static int volume = 20;
+    static int volume;
     static int dropList = 113;
 
     public static void setDropList(String entrada) {
@@ -39,7 +41,7 @@ public class Tokenizer {
                 dropList = 75;
                 break;
             case "Church Organ":
-                dropList = 19;
+                dropList = MIN_VOLUME;
                 break;
             default:
                 break;
@@ -47,17 +49,15 @@ public class Tokenizer {
     }
 
     public static void createToken(String texto) {
-        // empty start for ArrayList
         instrumento = dropList;
-        volume = 20;
-        oitava = 3;
-        tokens.removeAll(tokens);
+        volume = MIN_VOLUME;
+
+        oitava = OITAVA_DEFAULT;
         stringConvertida = " :CON(7, " + volume + ")"
                 + " I" + instrumento;
         int stringSize = texto.length();
         int lastChar = 1;
 
-        // TODO: TROCAR ARRAYLIST TOKENS PARA ESCRITA DIRETA STRING
         for (int i = 0; i < stringSize; i++) {
             switch (texto.charAt(i)) {
                 case 'A':
@@ -91,7 +91,8 @@ public class Tokenizer {
                 case '7':
                 case '8':
                 case '9':
-                    if ((instrumento + (texto.charAt(i) - '0')) < 127) {
+                    // MIDI MAX VALUE = 127
+                    if ((instrumento + (texto.charAt(i) - '0')) < MAX_MIDI) {
                         instrumento += (texto.charAt(i) - '0');
                     } else {
                         instrumento = 0;
@@ -101,10 +102,10 @@ public class Tokenizer {
                     System.out.println(instrumento);
                     break;
                 case ' ':
-                    if (volume < 70) {
+                    if (volume < MAX_VOLUME) {
                         volume *= 2;
                     } else {
-                        volume = 20;
+                        volume = MIN_VOLUME;
                     }
 
                     stringConvertida += " :CON(7, " + volume + ")";
@@ -117,10 +118,10 @@ public class Tokenizer {
                     break;
                 case '?':
                 case '.':
-                    if (oitava < 9) {
+                    if (oitava < MAX_OITAVA) {
                         oitava++;
                     } else {
-                        oitava = 3;
+                        oitava = OITAVA_DEFAULT;
                     }
                     break;
                 case '\n':

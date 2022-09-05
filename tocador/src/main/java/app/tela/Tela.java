@@ -93,6 +93,7 @@ public class Tela extends JFrame {
         painel.add(importButton);
 
         Botoes exportButton = new Botoes("Export", 800, 250);
+        texto.exportAction(exportButton);
         painel.add(exportButton);
 
     }

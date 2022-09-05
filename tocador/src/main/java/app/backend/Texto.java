@@ -10,10 +10,10 @@ import java.nio.file.Paths;
 
 import javax.swing.JFileChooser;
 import javax.swing.JTextArea;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 
+import org.jfugue.midi.MidiFileManager;
 import org.jfugue.pattern.Pattern;
 
 import app.tela.componentes.Botoes;
@@ -61,15 +61,15 @@ public class Texto extends Arquivo {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFileChooser arquivo = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
-                FileNameExtensionFilter filter = new FileNameExtensionFilter("Arquivos de Texto .TXT", "txt");
-                arquivo.addChoosableFileFilter(filter);
-                arquivo.setAcceptAllFileFilterUsed(false);
+                JFileChooser arquivoAbrir = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("Arquivos de Texto .txt", "txt");
+                arquivoAbrir.addChoosableFileFilter(filter);
+                arquivoAbrir.setAcceptAllFileFilterUsed(false);
 
-                if (arquivo.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+                if (arquivoAbrir.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                     // se abrir com sucesso faz isso ->
                     // achar um jeito de modular isso para outra classe
-                    arquivoTexto = arquivo.getSelectedFile();
+                    arquivoTexto = arquivoAbrir.getSelectedFile();
                     try {
                         content = Files.readString(Paths.get(arquivoTexto.toURI()));
                         setText(content);
@@ -84,7 +84,31 @@ public class Texto extends Arquivo {
     }
 
     public void exportAction(Botoes botao) {
-//TODO: IMPLEMENTAR EXPORT EM MIDI
+        // TODO: IMPLEMENTAR EXPORT EM MIDI
+        //
+        botao.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                JFileChooser arquivoSalvar = new JFileChooser();
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("Arquivo .MIDI", "MIDI");
+                arquivoSalvar.setFileFilter(filter);
+                arquivoSalvar.setAcceptAllFileFilterUsed(false);
+                arquivoSalvar.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+                if (arquivoSalvar.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+                    File arquivoMIDI = new File(arquivoSalvar.getSelectedFile().getAbsolutePath() + ".MIDI");
+
+                    try {
+                        MidiFileManager.savePatternToMidi(new Pattern(Tokenizer.stringConvertida),
+                                arquivoMIDI);
+                    } catch (IOException err) {
+                        err.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 
     private void playSound(JFugue tocador) {
@@ -97,7 +121,7 @@ public class Texto extends Arquivo {
 
     private void stopSound(JFugue tocador) {
 
-        System.out.println("entrou");
+        System.out.println("interrupcao");
         // troca pattern a ser tocado para vazio, mesmo que stop no som
         tocador.stopSound();
     }

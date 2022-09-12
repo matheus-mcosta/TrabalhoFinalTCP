@@ -1,6 +1,8 @@
 package app.tela;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -8,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import app.backend.Texto;
+import app.backend.Tokenizer;
 import app.enums.ListaInstrumentos;
 import app.tela.componentes.Botoes;
 
@@ -39,17 +42,28 @@ public class Tela extends JFrame {
     private void setPanel(JPanel p, int largura, int altura) {
         p.setSize(largura, altura);
 
+
     }
+
 
     private void inicializaPaineis() {
 
         // divididos dois paineis
         JPanel painel1 = new JPanel(null);
         setPanel(painel1, 600, 600);
-        painel1.setBackground(Color.decode("#797887"));
+        painel1.setBackground(Color.decode("#c2c4cc"));
 
         // dropdown list de instrumentos
-        JComboBox<ListaInstrumentos> instrumentos = new JComboBox<ListaInstrumentos>(ListaInstrumentos.values());
+        // FIX: passar pro tradutor
+        final JComboBox<ListaInstrumentos> instrumentos = new JComboBox<ListaInstrumentos>(ListaInstrumentos.values());
+        instrumentos.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                Tokenizer.setDropList(instrumentos.getSelectedItem().toString());
+            }
+        });
+
         instrumentos.setBounds(650, 150, 280, 50);
         painel1.add(instrumentos);
 
@@ -72,6 +86,7 @@ public class Tela extends JFrame {
         painel.add(playButton);
 
         Botoes stopButton = new Botoes("Stop", 335, 475);
+        texto.stopAction(stopButton);
         painel.add(stopButton);
 
         // botoes da direita
@@ -80,6 +95,7 @@ public class Tela extends JFrame {
         painel.add(importButton);
 
         Botoes exportButton = new Botoes("Export", 800, 250);
+        texto.exportAction(exportButton);
         painel.add(exportButton);
 
     }

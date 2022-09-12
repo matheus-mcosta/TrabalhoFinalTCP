@@ -10,8 +10,10 @@ import java.nio.file.Paths;
 
 import javax.swing.JFileChooser;
 import javax.swing.JTextArea;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 
+import org.jfugue.midi.MidiFileManager;
 import org.jfugue.pattern.Pattern;
 
 import app.tela.componentes.Botoes;
@@ -27,6 +29,10 @@ abstract class Arquivo extends JTextArea {
 
 public class Texto extends Arquivo {
     // private ArrayList<String> texto = new ArrayList<>();
+    //
+
+    JFugue tocador;
+    Thread threadTocador;
 
     public Texto() {
 
@@ -34,7 +40,7 @@ public class Texto extends Arquivo {
         setWrapStyleWord(true);
         setText("");
         setOpaque(true);
-        setBackground(Color.decode("#b8b6cc"));
+        setBackground(Color.decode("#f2f5fc"));
     }
 
     private void setContent(String texto) {
@@ -55,18 +61,19 @@ public class Texto extends Arquivo {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFileChooser arquivo = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+                JFileChooser arquivoAbrir = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("Arquivos de Texto .txt", "txt");
+                arquivoAbrir.addChoosableFileFilter(filter);
+                arquivoAbrir.setAcceptAllFileFilterUsed(false);
 
-                if (arquivo.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+                if (arquivoAbrir.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
                     // se abrir com sucesso faz isso ->
                     // achar um jeito de modular isso para outra classe
-                    arquivoTexto = arquivo.getSelectedFile();
+                    arquivoTexto = arquivoAbrir.getSelectedFile();
                     try {
                         content = Files.readString(Paths.get(arquivoTexto.toURI()));
                         setText(content);
                         Tokenizer.createToken(content);
-
-                        Tokenizer.PrintToken();
 
                     } catch (IOException e1) {
                         e1.printStackTrace();
@@ -76,12 +83,45 @@ public class Texto extends Arquivo {
         });
     }
 
-    private void playSound() {
+    public void exportAction(Botoes botao) {
+        botao.addActionListener(new ActionListener() {
 
-        // TODO: implementar Jfugue
-        Pattern pattern = new Pattern(" X[Volume]=10200 C D E F G A B");
-        JFugue tocador = new JFugue();
-        tocador.playSound(pattern);
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                JFileChooser arquivoSalvar = new JFileChooser();
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("Arquivo .MIDI", "MIDI");
+                arquivoSalvar.setFileFilter(filter);
+                arquivoSalvar.setAcceptAllFileFilterUsed(false);
+                arquivoSalvar.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+                if (arquivoSalvar.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+                    File arquivoMIDI = new File(arquivoSalvar.getSelectedFile().getAbsolutePath() + ".MIDI");
+
+                    try {
+                        MidiFileManager.savePatternToMidi(new Pattern(Tokenizer.stringConvertida),
+                                arquivoMIDI);
+                    } catch (IOException err) {
+                        err.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
+    private void playSound(JFugue tocador) {
+
+        // implementa threads para poder dar stop no som!!!
+        threadTocador = new Thread(tocador);
+        threadTocador.start();
+        System.out.println(threadTocador.getId());
+    }
+
+    private void stopSound(JFugue tocador) {
+
+        System.out.println("interrupcao");
+        // troca pattern a ser tocado para vazio, mesmo que stop no som
+        tocador.stopSound();
     }
 
     public void playAction(Botoes botao) {
@@ -93,13 +133,30 @@ public class Texto extends Arquivo {
                 setContent(getText());
 
                 Tokenizer.createToken(content);
-
-                Tokenizer.PrintToken();
-                playSound();
+                Pattern pattern = new Pattern(Tokenizer.stringConvertida);
+                tocador = new JFugue(pattern);
+                playSound(tocador);
 
             }
 
         });
 
     }
+
+    public void stopAction(Botoes botao) {
+
+        botao.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setContent(getText());
+
+                stopSound(tocador);
+
+            }
+
+        });
+
+    }
+
 }

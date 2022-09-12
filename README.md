@@ -1,15 +1,31 @@
 # TrabalhoFinalTCP
-Trabalho final disciplina Técnicas de Construção de Programas UFRGS
+## Trabalho final Técnicas de Construção de Programas (INF01120) UFRGS
+Tocador musical escrito em Java. Recebe um arquivo texto ou texto via teclado e converte em notas musicais. 
 
+---
 
- * [x] Projeto de Classes 
- * [x] Protótipos de Telas
- * [x] Leitura de Arquivo
- * [x] Tokenizer (String to List)
- * [ ] Input teclado para Token
- * [ ] Implementar JFugue
- * [ ] Testes de som
- * [ ] Exportar arquivo de som
+## Início rápido
+### Baixando jar executável
+Baixar jar compilado e executável em [Releases](https://github.com/matheus-mcosta/TrabalhoFinalTCP/releases)
+
+### Compilando
+
+#### Pré-requisitos 
+>[Maven](https://maven.apache.org)
+
+```
+mvn clean compile assembly:single && java -jar target/tocador-1.0-jar-with-dependencies.jar
+```
+---
+ * [X] Projeto de Classes 
+ * [X] Protótipos de Telas
+ * [X] Leitura de Arquivo
+ * [X] Tokenizer (String to List)
+ * [X] Input teclado para Token
+ * [X] Implementar JFugue
+ * [X] Testes de som
+ * [X] Exportar arquivo de som
  * [ ] Teste de software
  * [ ] Documentação
  * [ ] Apresentação de Slides
+

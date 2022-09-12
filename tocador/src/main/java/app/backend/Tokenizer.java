@@ -1,6 +1,5 @@
 package app.backend;
 
-import java.util.ArrayList;
 import app.enums.Tokens;
 
 /*
@@ -15,16 +14,47 @@ public class Main {
 */
 
 public class Tokenizer {
-    static ArrayList<Tokens> tokens = new ArrayList<Tokens>();
+    static final int MIN_VOLUME = 19;
+    static final int MAX_VOLUME = 79;
+    static final int OITAVA_DEFAULT = 3;
+    static final int MAX_OITAVA = 9;
+    static final int MAX_MIDI = 127;
 
-    public static void PrintToken() {
-        System.out.println(tokens);
+    static String stringConvertida;
+    static int oitava;
+    static int instrumento;
+    static int volume;
+    static int dropList = 113;
 
+    public static void setDropList(String entrada) {
+        switch (entrada) {
+            case "Agogo":
+                dropList = 113;
+                break;
+            case "Harpsichord":
+                dropList = 6;
+                break;
+            case "Tubular Bells":
+                dropList = 14;
+                break;
+            case "Pan Flute":
+                dropList = 75;
+                break;
+            case "Church Organ":
+                dropList = MIN_VOLUME;
+                break;
+            default:
+                break;
+        }
     }
 
-    public static ArrayList<Tokens> createToken(String texto) {
-        // empty start for ArrayList
-        tokens.removeAll(tokens);
+    public static void createToken(String texto) {
+        instrumento = dropList;
+        volume = MIN_VOLUME;
+
+        oitava = OITAVA_DEFAULT;
+        stringConvertida = " :CON(7, " + volume + ")"
+                + " I" + instrumento;
         int stringSize = texto.length();
         int lastChar = 1;
 
@@ -38,7 +68,9 @@ public class Tokenizer {
                 case 'F':
                 case 'G':
                     // As notas estão declaradas em ordem
-                    tokens.add(Tokens.values()[Tokens.NOTA_LA.ordinal() + texto.charAt(i) - 'A']);
+                    stringConvertida += " "
+                            + Tokens.values()[Tokens.NOTA_LA.ordinal() + texto.charAt(i) - 'A'].getData()
+                            + oitava;
                     break;
                 case 'i':
                 case 'I':
@@ -46,7 +78,8 @@ public class Tokenizer {
                 case 'O':
                 case 'u':
                 case 'U':
-                    tokens.add(Tokens.TROCA_HARPSICHORD);
+                    instrumento = Integer.parseInt(Tokens.TROCA_HARPSICHORD.getData());
+                    stringConvertida += " I" + instrumento;
                     break;
                 case '0':
                 case '1':
@@ -58,34 +91,56 @@ public class Tokenizer {
                 case '7':
                 case '8':
                 case '9':
-                    tokens.add(Tokens.INSTRUMENTO_DIGITO);
-                    // O Tocador deverá considerar o Token como dígito
-                    tokens.add(Tokens.values()[texto.charAt(i) - '0']);
+                    // MIDI MAX VALUE = 127
+                    if ((instrumento + (texto.charAt(i) - '0')) < MAX_MIDI) {
+                        instrumento += (texto.charAt(i) - '0');
+                    } else {
+                        instrumento = 0;
+                    }
+
+                    stringConvertida += " I" + instrumento;
+                    System.out.println(instrumento);
                     break;
                 case ' ':
-                    tokens.add(Tokens.VOLUME_DOBRO);
+                    if (volume < MAX_VOLUME) {
+                        volume *= 2;
+                    } else {
+                        volume = MIN_VOLUME;
+                    }
+
+                    stringConvertida += " :CON(7, " + volume + ")";
+                    // :CON(7, 40)
+
                     break;
                 case '!':
-                    tokens.add(Tokens.TROCA_AGOGO);
+                    instrumento = Integer.parseInt(Tokens.TROCA_AGOGO.getData());
+                    stringConvertida += " I" + instrumento;
                     break;
                 case '?':
                 case '.':
-                    tokens.add(Tokens.AUMENTA_OITAVA);
+                    if (oitava < MAX_OITAVA) {
+                        oitava++;
+                    } else {
+                        oitava = OITAVA_DEFAULT;
+                    }
                     break;
                 case '\n':
-                    tokens.add(Tokens.TROCA_BELLS);
+                    instrumento = Integer.parseInt(Tokens.TROCA_BELLS.getData());
+                    stringConvertida += " I" + instrumento;
                     break;
                 case ';':
-                    tokens.add(Tokens.TROCA_FLUTE);
+                    instrumento = Integer.parseInt(Tokens.TROCA_FLUTE.getData());
+                    stringConvertida += " I" + instrumento;
                     break;
                 case ',':
-                    tokens.add(Tokens.TROCA_CHURCH);
+                    instrumento = Integer.parseInt(Tokens.TROCA_CHURCH.getData());
+                    stringConvertida += " I" + instrumento;
                     break;
                 default:
                     if (lastChar >= 'A' && lastChar <= 'G') {
-                        tokens.add(tokens.get(tokens.size() - 1));
+                        stringConvertida += stringConvertida.substring(stringConvertida.length() - 3);
                     } else {
-                        tokens.add(Tokens.SILENCIO_OU_PAUSA);
+                        stringConvertida += " " + Tokens.SILENCIO_OU_PAUSA.getData();
                     }
 
                     break;
@@ -94,8 +149,6 @@ public class Tokenizer {
             lastChar = texto.charAt(i);
         }
 
-        tokens.add(Tokens.FIM);
-
-        return tokens;
+        System.out.println(stringConvertida);
     }
 }

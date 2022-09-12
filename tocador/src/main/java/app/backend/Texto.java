@@ -40,7 +40,7 @@ public class Texto extends Arquivo {
         setWrapStyleWord(true);
         setText("");
         setOpaque(true);
-        setBackground(Color.decode("#b8b6cc"));
+        setBackground(Color.decode("#f2f5fc"));
     }
 
     private void setContent(String texto) {
@@ -84,8 +84,6 @@ public class Texto extends Arquivo {
     }
 
     public void exportAction(Botoes botao) {
-        // TODO: IMPLEMENTAR EXPORT EM MIDI
-        //
         botao.addActionListener(new ActionListener() {
 
             @Override

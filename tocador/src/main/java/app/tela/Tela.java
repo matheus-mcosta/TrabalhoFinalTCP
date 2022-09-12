@@ -42,14 +42,16 @@ public class Tela extends JFrame {
     private void setPanel(JPanel p, int largura, int altura) {
         p.setSize(largura, altura);
 
+
     }
+
 
     private void inicializaPaineis() {
 
         // divididos dois paineis
         JPanel painel1 = new JPanel(null);
         setPanel(painel1, 600, 600);
-        painel1.setBackground(Color.decode("#797887"));
+        painel1.setBackground(Color.decode("#c2c4cc"));
 
         // dropdown list de instrumentos
         // FIX: passar pro tradutor

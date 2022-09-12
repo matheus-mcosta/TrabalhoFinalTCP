@@ -1,7 +1,7 @@
 # TrabalhoFinalTCP
 ## Trabalho final Técnicas de Construção de Programas (INF01120) UFRGS
-
 Tocador musical escrito em Java. Recebe um arquivo texto ou texto via teclado e converte em notas musicais. 
+
 ---
 
 ## Início rápido

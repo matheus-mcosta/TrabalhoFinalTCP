@@ -28,7 +28,6 @@ public class Tela extends JFrame {
 
     public Tela() {
         // incializadores da tela geral
-        // setBounds(0, 0, LARGURA, ALTURA);
         setTitle("Tocador de Notas Musicais");
         setSize(LARGURA, ALTURA);
         setLocation(200, 200);
@@ -39,26 +38,23 @@ public class Tela extends JFrame {
 
     }
 
-    private void setPanel(JPanel p, int largura, int altura) {
+    private void setPanel(final JPanel p, final int largura, final int altura) {
         p.setSize(largura, altura);
-
-
     }
-
 
     private void inicializaPaineis() {
 
         // divididos dois paineis
-        JPanel painel1 = new JPanel(null);
+        final JPanel painel1 = new JPanel(null);
         setPanel(painel1, 600, 600);
         painel1.setBackground(Color.decode("#c2c4cc"));
 
         // dropdown list de instrumentos
-        // FIX: passar pro tradutor
         final JComboBox<ListaInstrumentos> instrumentos = new JComboBox<ListaInstrumentos>(ListaInstrumentos.values());
+        // eventListener da lista de instrumentos selecionaveis da lista
         instrumentos.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
 
                 Tokenizer.setDropList(instrumentos.getSelectedItem().toString());
             }
@@ -68,33 +64,32 @@ public class Tela extends JFrame {
         painel1.add(instrumentos);
 
         // adiciona caixa de texto para input
-        Texto texto = new Texto();
-        JScrollPane scrollPane = new JScrollPane(texto);
+        final Texto texto = new Texto();
+        final JScrollPane scrollPane = new JScrollPane(texto);
         scrollPane.setBounds(50, 50, 550, 400);
         painel1.add(scrollPane);
         // incializa texto e botooes da tela
         inicializaBotoes(painel1, texto);
-
         add(painel1);
 
     }
 
-    private void inicializaBotoes(JPanel painel, Texto texto) {
+    private void inicializaBotoes(final JPanel painel, final Texto texto) {
         // botoes da esquerda
-        Botoes playButton = new Botoes("Play", 185, 475);
+        final Botoes playButton = new Botoes("Play", 185, 475);
         texto.playAction(playButton);
         painel.add(playButton);
 
-        Botoes stopButton = new Botoes("Stop", 335, 475);
+        final Botoes stopButton = new Botoes("Stop", 335, 475);
         texto.stopAction(stopButton);
         painel.add(stopButton);
 
         // botoes da direita
-        Botoes importButton = new Botoes("Import", 650, 250);
+        final Botoes importButton = new Botoes("Import", 650, 250);
         texto.importAction(importButton);
         painel.add(importButton);
 
-        Botoes exportButton = new Botoes("Export", 800, 250);
+        final Botoes exportButton = new Botoes("Export", 800, 250);
         texto.exportAction(exportButton);
         painel.add(exportButton);
 

@@ -11,17 +11,16 @@ public class JFugue implements Runnable {
     Pattern pattern;
     Player player;
 
-    JFugue(Pattern patternInput) {
-
+    JFugue(final Pattern patternInput) {
         this.pattern = new Pattern(patternInput);
         this.player = new Player();
-
     }
 
+    // funcao de thread para tocar em paralelo para permitir stopSound
+    // e abrir janela de arquivo enquanto toca, assim nao depende da 
+    // musica acabar para fazer outras operacoes
     @Override
     public void run() {
-        // TODO Auto-generated method stub
-
         this.player.play(this.pattern);
     }
 

@@ -25,7 +25,7 @@ public enum Tokens {
 
     private final String data;
 
-    private Tokens(String data) {
+    private Tokens(final String data) {
         this.data = data;
     }
 

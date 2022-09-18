@@ -2,20 +2,9 @@ package app.backend;
 
 import app.enums.Tokens;
 
-/*
-public class Main {
-    public static void main(String[] args) {
-        for (int i = 1; i < args.length; i++) {
-            System.out.println(args[i]);
-            System.out.println(Tokenizer.Tokenizer(args[i]));
-        }
-    }
-}
-*/
-
 public class Tokenizer {
-    static final int MIN_VOLUME = 19;
-    static final int MAX_VOLUME = 79;
+    static final int MIN_VOLUME = 15;
+    static final int MAX_VOLUME = 75;
     static final int OITAVA_DEFAULT = 3;
     static final int MAX_OITAVA = 9;
     static final int MAX_MIDI = 127;
@@ -24,9 +13,9 @@ public class Tokenizer {
     static int oitava;
     static int instrumento;
     static int volume;
-    static int dropList = 113;
+    static int dropList = 113; // valor do midi da dropDownList da interface
 
-    public static void setDropList(String entrada) {
+    public static void setDropList(final String entrada) {
         switch (entrada) {
             case "Agogo":
                 dropList = 113;
@@ -48,14 +37,15 @@ public class Tokenizer {
         }
     }
 
-    public static void createToken(String texto) {
+    // metodo conversor de string para tokens do JFugue
+    public static void createToken(final String texto) {
         instrumento = dropList;
         volume = MIN_VOLUME;
 
         oitava = OITAVA_DEFAULT;
         stringConvertida = " :CON(7, " + volume + ")"
                 + " I" + instrumento;
-        int stringSize = texto.length();
+        final int stringSize = texto.length();
         int lastChar = 1;
 
         for (int i = 0; i < stringSize; i++) {
@@ -99,9 +89,9 @@ public class Tokenizer {
                     }
 
                     stringConvertida += " I" + instrumento;
-                    System.out.println(instrumento);
                     break;
                 case ' ':
+                    // JFugue max volume = 160
                     if (volume < MAX_VOLUME) {
                         volume *= 2;
                     } else {
@@ -149,6 +139,5 @@ public class Tokenizer {
             lastChar = texto.charAt(i);
         }
 
-        System.out.println(stringConvertida);
     }
 }

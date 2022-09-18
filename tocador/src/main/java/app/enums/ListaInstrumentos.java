@@ -9,7 +9,7 @@ public enum ListaInstrumentos {
 
     private String nome;
 
-    private ListaInstrumentos(String nome) {
+    private ListaInstrumentos(final String nome) {
         this.nome = nome;
     }
 

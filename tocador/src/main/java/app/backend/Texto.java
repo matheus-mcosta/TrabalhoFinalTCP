@@ -28,14 +28,12 @@ abstract class Arquivo extends JTextArea {
 }
 
 public class Texto extends Arquivo {
-    // private ArrayList<String> texto = new ArrayList<>();
-    //
 
     JFugue tocador;
     Thread threadTocador;
 
     public Texto() {
-
+        // incializacao da caixa de texto da interface
         setLineWrap(true);
         setWrapStyleWord(true);
         setText("");
@@ -43,8 +41,7 @@ public class Texto extends Arquivo {
         setBackground(Color.decode("#f2f5fc"));
     }
 
-    private void setContent(String texto) {
-
+    private void setContent(final String texto) {
         this.content = texto;
     }
 
@@ -52,30 +49,30 @@ public class Texto extends Arquivo {
         return this.content;
     }
 
-    public void setArquivoTexto(File arquivoTexto) {
+    public void setArquivoTexto(final File arquivoTexto) {
         this.arquivoTexto = arquivoTexto;
     }
 
-    public void importAction(Botoes botao) {
-        botao.addActionListener(new ActionListener() {
+    public void importAction(final Botoes botao) {
 
+        botao.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser arquivoAbrir = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
-                FileNameExtensionFilter filter = new FileNameExtensionFilter("Arquivos de Texto .txt", "txt");
+            public void actionPerformed(final ActionEvent e) {
+                // abre janela de arquivos e somente arquivos com extensao txt
+                final JFileChooser arquivoAbrir = new JFileChooser(
+                        FileSystemView.getFileSystemView().getHomeDirectory());
+                final FileNameExtensionFilter filter = new FileNameExtensionFilter("Arquivos de Texto .txt", "txt");
                 arquivoAbrir.addChoosableFileFilter(filter);
                 arquivoAbrir.setAcceptAllFileFilterUsed(false);
 
                 if (arquivoAbrir.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                    // se abrir com sucesso faz isso ->
-                    // achar um jeito de modular isso para outra classe
                     arquivoTexto = arquivoAbrir.getSelectedFile();
                     try {
                         content = Files.readString(Paths.get(arquivoTexto.toURI()));
                         setText(content);
                         Tokenizer.createToken(content);
 
-                    } catch (IOException e1) {
+                    } catch (final IOException e1) {
                         e1.printStackTrace();
                     }
                 }
@@ -83,25 +80,24 @@ public class Texto extends Arquivo {
         });
     }
 
-    public void exportAction(Botoes botao) {
+    public void exportAction(final Botoes botao) {
+
         botao.addActionListener(new ActionListener() {
-
             @Override
-            public void actionPerformed(ActionEvent e) {
-
-                JFileChooser arquivoSalvar = new JFileChooser();
-                FileNameExtensionFilter filter = new FileNameExtensionFilter("Arquivo .MIDI", "MIDI");
+            public void actionPerformed(final ActionEvent e) {
+                // abre janela para salvar arquivo e salva em .MIDI
+                final JFileChooser arquivoSalvar = new JFileChooser();
+                final FileNameExtensionFilter filter = new FileNameExtensionFilter("Arquivo .MIDI", "MIDI");
                 arquivoSalvar.setFileFilter(filter);
                 arquivoSalvar.setAcceptAllFileFilterUsed(false);
                 arquivoSalvar.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
                 if (arquivoSalvar.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-                    File arquivoMIDI = new File(arquivoSalvar.getSelectedFile().getAbsolutePath() + ".MIDI");
-
+                    final File arquivoMIDI = new File(arquivoSalvar.getSelectedFile().getAbsolutePath() + ".MIDI");
                     try {
                         MidiFileManager.savePatternToMidi(new Pattern(Tokenizer.stringConvertida),
                                 arquivoMIDI);
-                    } catch (IOException err) {
+                    } catch (final IOException err) {
                         err.printStackTrace();
                     }
                 }
@@ -109,50 +105,34 @@ public class Texto extends Arquivo {
         });
     }
 
-    private void playSound(JFugue tocador) {
+    private void playSound(final JFugue tocador) {
 
         // implementa threads para poder dar stop no som!!!
         threadTocador = new Thread(tocador);
         threadTocador.start();
-        System.out.println(threadTocador.getId());
     }
 
-    private void stopSound(JFugue tocador) {
-
-        System.out.println("interrupcao");
-        // troca pattern a ser tocado para vazio, mesmo que stop no som
-        tocador.stopSound();
-    }
-
-    public void playAction(Botoes botao) {
-
+    // le o texto contido na tela, chama conversor e passa para o tocador
+    public void playAction(final Botoes botao) {
         botao.addActionListener(new ActionListener() {
-
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 setContent(getText());
-
                 Tokenizer.createToken(content);
-                Pattern pattern = new Pattern(Tokenizer.stringConvertida);
+                final Pattern pattern = new Pattern(Tokenizer.stringConvertida);
                 tocador = new JFugue(pattern);
                 playSound(tocador);
-
             }
-
         });
-
     }
 
-    public void stopAction(Botoes botao) {
+    public void stopAction(final Botoes botao) {
 
+        // chama metodo stopSound de tocador quando pressionar botao de stop
         botao.addActionListener(new ActionListener() {
-
             @Override
-            public void actionPerformed(ActionEvent e) {
-                setContent(getText());
-
-                stopSound(tocador);
-
+            public void actionPerformed(final ActionEvent e) {
+                tocador.stopSound();
             }
 
         });

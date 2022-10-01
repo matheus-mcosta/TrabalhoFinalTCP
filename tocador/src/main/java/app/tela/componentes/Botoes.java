@@ -3,7 +3,7 @@ package app.tela.componentes;
 import javax.swing.JButton;
 
 /**
- * botoes
+ * Classe padrao dos botoes da interface
  */
 public class Botoes extends JButton {
 

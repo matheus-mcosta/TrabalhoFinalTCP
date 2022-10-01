@@ -3,65 +3,116 @@
 skinparam classAttributeIconSize 0
 
 class Tela {
-    -Array ListaDeInstrumentos
     
+    {static}int ALTURA
+    {static}int LARGURA
+    # Texto texto
 
-    +getInstrumento()
-    +recebeTeclado()
-    +playPause()
-    +botaoImport()
-    +botaoExpport()
+    +Tela()
+    -inicializaBotoes(JPanel painel, Texto texto)
+    -inicializaPaineis()
+    -setPanel(JPanel p, int largura, int altura)
+
+
 }
 
-class Tocador{
-   - instrumento
-   - bpm
-   - volume
+class JFugue{
+    Pattern pattern
+    Player player
 
-
-   + tocarSom()
-   + pauseSom()
+    + JFugue(Pattern patternInput)
+    + run()
+    + stopSound()
 }
+
+
+abstract class Arquivo{
+    File arquivoTexto
+    String content
+
+    }
 
 class Texto{
- - String texto
+    JFugue tocador
+    Thread threadTocador
 
- + String getTexto()
+    + Texto()
+    + getContent()
+    - setContent(String texto)
+    + setArquivoTexto(FIle arquivoTexto)
+    + playAction(Botoes botao)
+    - playSound(JFugue tocador)
+    + stopAction(Botoes botao)
+    - stopSound(JFugue tocador)
+    + exportAction(Botoes botao)
+    + importAction(Botoes botao)
 
+}
+
+
+class Botoes{
+    +Botoes(String nome, int x, int y)
 
 }
 
 
-class Import{
-+ void abrirExplorador()
-- String abrirArquivo()
 
+class Tokenizer{
+    {static} int MAX_MIDI
+    {static} int MAX_OITAVA
+    {static} int MAX_VOLUME
+    {static} int MIN_VOLUME
+    {static} int OITAVA_DEFAULT
+    {static} int dropList
+    {static} int instrumento
+    {static} int oitava
+    {static} int volume
+    {static} String stringConvertida
+
+    + createToken(String texto)
+    + setDropList(String entrada)
 
 }
-class Leitor{
 
-+List converteTexto()
+enum Tokens{
+   AUMENTA_OITAVA
+   INSTRUMENTO_DIGITO
+   NOTA_DO
+   NOTA_FA
+   NOTA_LA
+   NOTA_MI
+   NOTA_RE
+   NOTA_SI
+   NOTA_SOL
+   SILENCIO_OU_PAUSA
+   TROCA_AGOGO
+   TROCA_BELLS
+   TROCA_CHURCH
+   TROCA_FLUTE
+   TROCA_HARPSICHORD
+   VOLUME_DOBRO
+   
+   - data
 
-}
+   -Tokens(String data)
+   getData()
+    }
 
-class Codificador{
+enum ListaInstrumentos{
+    AGOGO   
+    CHURCHORGAN
+    HARPSICHORD
+    PANFLUTE
+    TUBULARBELLS
 
-+String listToJfugue()
+
+    -nome
+
+    -ListaInstrumentos(String nome)
+    +toString()
 
 
-}
-
-class Export{ 
-
-+ salvaArquivo()
-}
-
-Import --right--> Texto
-Tela --left--> Texto
-Texto ----> Leitor
-Leitor ----> Codificador
-Codificador --up--> Tocador
-Tela ----> Tocador
-Tocador ----> Export
+    }
 
 @enduml
+

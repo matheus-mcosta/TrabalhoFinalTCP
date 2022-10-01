@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Trabalho Final TCP</title>
+    <meta charset="utf-8">
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+        @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+        @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+        body {
+            font-family: 'Droid Serif';
+        }
+
+        h1,
+        h2,
+        h3{
+            font-family: 'Yanone Kaffeesatz';
+            font-weight: normal;
+        }
+
+        h1,
+        h2 {
+            font-size: 3rem;
+        }
+
+        h3{
+            font-size: 1rem;
+        }
+        .center {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+
+
+        .remark-code,
+        .remark-inline-code {
+            font-family: 'Ubuntu Mono';
+        }
+    </style>
+</head>
+
+<body>
+    <textarea id="source">
+
+        class: center, middle
+
+        # Técnicas de Construção de Programas
+        ### Trabalho Final - Sintetizador de String
+          
+        Alunos: Andrei R. Bereta, Felipe S. Bertoglio, Kathleen L. F. Hoff, Matheus de M. Costa 
+        
+        2022/1
+        ---
+        # Sumário
+                
+        1. Requisitos
+
+        2. Projeto
+
+        3. Implementação
+
+        4. Verificação
+
+        5. Evolução
+        ---
+
+
+        # Requisitos
+        
+        A fim de concluir os estudos sobre Técnicas de Construção do Programas, os professores propuseram o desenvolvimento de um sintetizador de strings que tem como principal tarefa receber uma string e a traduzir em sons previamente padronizados.  
+
+        Os requisitos necessários para a conclusão do projeto eram:
+            
+        - Escolha e desenvolvimento de alguma linguagem de programação orientada a objeto;
+            
+        - Entrada de string pelo teclado ou carregamento de txt;
+            
+        - Tradução da string em som;
+            
+        - Possibilidade de exportação de um arquivo MIDI;
+            
+        - Seguir os seguintes parâmetros:
+        ---
+        <br>
+        <br>
+        <br>
+        <img src="requisitos.png" width="100%">
+        ---
+
+
+        # Projeto
+
+        Escolhemos utilizar a linguagem Java aliada às seguintes bibliotecas:
+        - JFugue: Capaz de traduzir strings em sons;
+        - Componentes de javax.swing: Usadas para criação da tela criada para o usuário. Exemplo: javax.swing.JTextArea, utilizada para a criação da caixa de texto.
+
+
+
+        As funcionalidades que inserimos no trabalho foram:
+        - Tradução de textos (tipo string) em som;
+        - Possibilidade de dar play e stop no som;
+        - Importar arquivos com a extensão .txt que contenham um texto a ser traduzido;
+        - Exportar o som, salvando-o em um arquivo na biblioteca do usuário;
+        - Mudança de instrumento base, através da seleção de um instrumento no menu;
+
+        ---
+        O protótipo da Tela de visualização proposto foi:
+  
+        <img src="tela.jpg" width="70%" class="center"> 
+        ---
+
+        Também foi desenvolvida a seguinte UML:
+
+        ---
+
+
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+        var slideshow = remark.create({
+            highlightLanguage: 'java',
+            highlightStyle: 'monokai',
+        });
+    </script>
+</body>
+
+</html>
